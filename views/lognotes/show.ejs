@@ -1,0 +1,27 @@
+<!-- views/lognotes/show.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Note</title>
+</head>
+
+<body>
+    <%- include('../partials/_navbar.ejs') %>
+    <h1>Integrated Log Book Application</h1>
+    <%= lognote %>
+    <br>
+    <!-- edit button -->
+    <a href="/lognotes/<%= lognote._id %>/edit">Edit this log</a>
+    <br>
+    <!-- delete button -->
+    <form action="/lognotes/<%= lognote._id %>?_method=DELETE" method="POST">
+        <button type="submit">Delete this log</button>
+    </form>
+
+</body>
+
+</html>

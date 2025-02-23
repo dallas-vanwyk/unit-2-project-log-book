@@ -1,0 +1,27 @@
+<!-- views/lognotes/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ILBA</title>
+</head>
+
+<body>
+    <%- include('../partials/_navbar.ejs') %>
+    <h1>Integrated Log Book Application</h1>
+    <br>
+    
+    <ul>
+        <% lognotes.forEach((lognote) => { %>
+            <a href="/lognotes/<%= lognote._id %>">
+                <li><%= lognote.description %></li>
+            </a>
+        <% }) %>
+    </ul>
+
+</body>
+
+</html>

@@ -16,32 +16,62 @@ const Lognote = require('../models/lognote.js');
 // -------------------------------------------------------------- Index
 
 router.get('/', async (req, res) => {
-    res.send(`lognotes index route`);
+    // res.send(`lognotes index route`);
+
+    // add logic to check if logged in
+
+    const lognotes = await Lognote.find();
+
+    res.render('lognotes/index.ejs', {
+        lognotes: lognotes,
+    });
 });
 
 // -------------------------------------------------------------- New
 
 router.get('/new', (req, res) => {
     // res.send('new log note form');
+    // add logic to check if logged in
     res.render('lognotes/new.ejs');
 });
 
 // -------------------------------------------------------------- Delete
 
 router.delete('/:lognoteId', async (req, res) => {
-    res.send('delete route');
+    try {
+        // this should have some sort of confirmation double-check
+        await Lognote.findByIdAndDelete(req.params.lognoteId);
+        res.redirect('/lognotes');
+    } catch (error) {
+        console.log(error);
+        res.redirect('/');
+    };
 });
 
 // -------------------------------------------------------------- Update
 
-router.put('/:lognoteId/edit', async (req, res) => {
-    res.send('edit route');
+router.put('/:lognoteId', async (req, res) => {
+
+    try {
+        
+        const lognote = await Lognote.findById(req.params.lognoteId);
+
+        lognote.set(req.body);
+
+        await lognote.save();
+        
+        res.redirect('/lognotes');
+
+    } catch (error) {
+        console.log(error);
+        res.redirect('/');
+    };
 });
 
 // -------------------------------------------------------------- Create
 
 router.post('/', async (req, res) => {
-    
+
     try {
 
         // auto-fill the creator
@@ -64,15 +94,40 @@ router.post('/', async (req, res) => {
 
 // -------------------------------------------------------------- Edit
 
-router.get('/:lognoteId/edit', (req, res) => {
-    res.send('edit route');
+router.get('/:lognoteId/edit', async (req, res) => {
+    // res.send('edit route');
+    
+    try {
+
+        const lognote = await Lognote.findById(req.params.lognoteId);
+        
+        res.render('lognotes/edit.ejs', {
+            lognote: lognote,
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.redirect('/');
+    };
 });
 
 
 // -------------------------------------------------------------- Show
 
-router.get('/:lognoteId', (req, res) => {
-    res.send('show route')
+router.get('/:lognoteId', async (req, res) => {
+    // res.send('show route')
+
+    try {
+        const lognote = await Lognote.findById(req.params.lognoteId);
+        
+        res.render('lognotes/show.ejs', {
+            lognote: lognote,
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.redirect('/');
+    };
 });
 
 
