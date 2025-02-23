@@ -1,1 +1,52 @@
 <!-- auth/create-user.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create User</title>
+</head>
+
+<body>
+  <%- // include('../partials/_navbar.ejs') %>
+  <h1>Add a new user!</h1>
+  <form action="/auth/create-user" method="POST">
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" required />
+    <br>
+
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" required />
+    <br>
+
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="password" name="confirmPassword" id="confirmPassword" required />
+    <br>
+
+    <label for="role">Role:</label>
+    <select name="role" id="role">
+        <option value="viewer">Viewer</option>
+        <option value="editor">Editor</option>
+        <option value="admin">Admin</option>
+    </select>
+    <br>
+
+    <label for="firstName">First name:</label>
+    <input type="text" name="firstName" id="firstName" required />
+    <br>
+
+    <label for="lastName">Last name:</label>
+    <input type="text" name="lastName" id="lastName" required />
+    <br>
+    
+    <label for="email">email:</label>
+    <input type="text" name="email" id="email" required />
+    <br>
+
+    <button type="submit">Create user</button>
+  </form>
+</body>
+
+</html>

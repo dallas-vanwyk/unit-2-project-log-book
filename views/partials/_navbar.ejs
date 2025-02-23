@@ -1,0 +1,12 @@
+<!-- views/partials/_navbar.ejs -->
+
+<nav>
+    <a href="/lognotes/">Home</a>
+    <a href="/lognotes/new">New</a>
+    <a href="mailto:dallas.vanwyk@gmail.com">Contact</a>
+    <a href="/auth/sign-out">Sign Out</a>
+    <% if(user.role === 'admin') { %>
+        <a href="/auth/create-user">Create User</a>
+        <!-- <a href="/auth/manage-users">Manage Users (futuee)</a> -->
+    <% } %>
+</nav>
