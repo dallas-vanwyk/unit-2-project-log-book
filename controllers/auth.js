@@ -152,7 +152,22 @@ router.post('/create-user', async (req, res) => {
 
 // -------------------------------------------------------------- view all users
 
+router.get('/view-users', async (req, res) => {
+    if (req.session.user) {
 
+        console.log(req.session.user);
+        const user = await User.findById(req.session.user._id);
+
+        if (user.role === 'admin') {
+            const users = await User.find();
+            res.render('auth/view-users.ejs', {
+                users: users,
+            });
+        } else {
+            res.redirect('/');
+        };
+    };
+});
 
 // -------------------------------------------------------------- edit user
 

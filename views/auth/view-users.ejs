@@ -1,0 +1,27 @@
+<!-- views/auth/view-users.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log book users</title>
+</head>
+
+<body>
+    <%- include('../partials/_navbar.ejs') %>
+    <h1>Log Book Users</h1>
+    <br>
+    
+    <ul>
+        <% users.forEach((user) => { %>
+            <a href="/auth/edit-user/<%= // user._id %>">
+                <li><%= user %></li>
+            </a>
+        <% }) %>
+    </ul>
+
+</body>
+
+</html>
