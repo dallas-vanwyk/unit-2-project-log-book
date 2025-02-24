@@ -16,8 +16,7 @@ const Lognote = require('../models/lognote.js');
 // -------------------------------------------------------------- Index
 
 router.get('/', async (req, res) => {
-    // res.send(`lognotes index route`);
-
+    
     // add logic to check if logged in
 
     const lognotes = await Lognote.find();
@@ -30,7 +29,7 @@ router.get('/', async (req, res) => {
 // -------------------------------------------------------------- New
 
 router.get('/new', (req, res) => {
-    // res.send('new log note form');
+    
     // add logic to check if logged in
     res.render('lognotes/new.ejs');
 });
@@ -51,7 +50,7 @@ router.delete('/:lognoteId', async (req, res) => {
 // -------------------------------------------------------------- Update
 
 router.put('/:lognoteId', async (req, res) => {
-
+    console.log(req.body);
     try {
         
         const lognote = await Lognote.findById(req.params.lognoteId);
@@ -95,8 +94,7 @@ router.post('/', async (req, res) => {
 // -------------------------------------------------------------- Edit
 
 router.get('/:lognoteId/edit', async (req, res) => {
-    // res.send('edit route');
-    
+
     try {
 
         const lognote = await Lognote.findById(req.params.lognoteId);
@@ -111,11 +109,9 @@ router.get('/:lognoteId/edit', async (req, res) => {
     };
 });
 
-
 // -------------------------------------------------------------- Show
 
 router.get('/:lognoteId', async (req, res) => {
-    // res.send('show route')
 
     try {
         const lognote = await Lognote.findById(req.params.lognoteId);

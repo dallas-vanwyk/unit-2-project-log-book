@@ -26,9 +26,9 @@ app.use(
     })
 );
 
-
 // -------------------------------------------------------------- other files...
 
+// authController for all session authentication, including sign-in page
 const authController = require('./controllers/auth.js');
 app.use('/auth', authController);
 
@@ -38,9 +38,9 @@ app.use(isSignedIn);
 const passUserToView = require('./middleware/pass-user-to-view.js');
 app.use(passUserToView);
 
+// lognotesController for all log note views and functionality
 const lognotesController = require('./controllers/lognotes.js');
 app.use('/lognotes', lognotesController)
-
 
 // -------------------------------------------------------------- other parameters
 
@@ -52,29 +52,18 @@ mongoose.connection.on('connected', () => {
     console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
-
-
-// -------------------------------------------------------------- middleware ..... ?
-
-
 // -------------------------------------------------------------- routes
 
+// the root route; there is no need for a 'home page'
 app.get('/', (req, res) => {
     if (req.session.user) {
         // if signed in, go to log notes page
-        res.render('index.ejs');
-        // res.render('index.ejs');
+        res.redirect('/lognotes');
     } else {
         // start at the sign in page
-        res.render('auth/sign-in.ejs');
-        // res.render('index.ejs');
+        res.redirect('/auth/sign-in.ejs');
     };
 });
-
-
-
-
-
 
 // -------------------------------------------------------------- port listener
 
@@ -82,5 +71,4 @@ app.listen(port, () => {
     console.log(`The express app is ready on port ${port}.`);
 });
 
-// -------------------------------------------------------------- 
 // -------------------------------------------------------------- 
