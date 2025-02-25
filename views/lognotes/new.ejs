@@ -12,100 +12,109 @@
 
 <body>
     <%- include('../partials/_navbar.ejs') %>
-        <h1>New Log</h1>
-        
-        <form action="/lognotes" method="POST">
 
-            <label for="description">Decription:</label>
-            <textarea name="description" name="decription" id="description"></textarea>
-            <br>
+    <h1>New Log</h1>
+    
+    <form action="/lognotes" method="POST">
 
-            <label for="contactName">Contact name:</label>
-            <input type="text" name="contactName" id="contactName">
-            <br>
+        <label for="description">Decription:</label>
+        <textarea name="description" name="decription" id="description"></textarea>
+        <br>
 
-            <label for="contactType">Internal or external contact:</label>
-            <select name="contactType" id="contactType">
-                <option value="internal">Internal</option>
-                <option value="external">External</option>
-            </select>
-            <br>
+        <label for="contactName">Contact name:</label>
+        <input type="text" name="contactName" id="contactName">
+        <br>
 
-            <label for="locationName">Location:</label>
-            <input type="text" name="locationName" id="locationName">
-            <br>
+        <label for="contactType">Internal or external contact:</label>
+        <select name="contactType" id="contactType">
+            <option value="internal">Internal</option>
+            <option value="external">External</option>
+        </select>
+        <br>
 
-            <label for="locationType">Location type:</label>
-            <select name="locationType" id="locationType">
-                <option value="plant">Plant</option>
-                <option value="pipeline">Pipeline</option>
-                <option value="customer">Customer</option>
-                <option value="other">Other</option>
-            </select>
-            <br>
+        <label for="locationName">Location:</label>
+        <input type="text" name="locationName" id="locationName">
+        <br>
 
-            <label for="product">Product</label>
-            <select name="product" id="product">
-                <option value="oxygen">Oxygen</option>
-                <option value="nitrogen">Nitrogen</option>
-                <option value="hydrogen">Hydrogen</option>
-            </select>
-            <br>
+        <label for="locationType">Location type:</label>
+        <select name="locationType" id="locationType">
+            <option value="plant">Plant</option>
+            <option value="pipeline">Pipeline</option>
+            <option value="customer">Customer</option>
+            <option value="other">Other</option>
+        </select>
+        <br>
 
-            <!-- set a default value here -->
-            <!-- do I want this to be free text or a datetime-local? -->
-            <!-- <label for="inputTime">Event date and time:</label>
-            <input type="text" name="inputTime" id="inputTime">
-            <br> -->
+        <label for="product">Product</label>
+        <select name="product" id="product">
+            <option value="oxygen">Oxygen</option>
+            <option value="nitrogen">Nitrogen</option>
+            <option value="hydrogen">Hydrogen</option>
+        </select>
+        <br>
 
 
-            <!-- <input type='checkbox' name='sendEmail' id='sendEmail' checked>
-            <label for='sendEmail'>Send email</label>
-            <br>
+        <!-- F U T U R E  feature implementations follow: -->
 
-            <input type='checkbox' name='sendText' id='sendText'>
-            <label for='sendText'>Send text (MIR3)</label>
-            <br>
+        <!-- set a default value here -->
+        <!-- do I want this to be free text or a datetime-local? -->
+        <!-- <label for="inputTime">Event date and time:</label>
+        <input type="text" name="inputTime" id="inputTime">
+        <br> -->
 
-            <input type='checkbox' name='isCurrent' id='isCurrent' checked>
-            <label for='isCurrent'>Current information</label>
-            <br>
 
-            <input type='checkbox' name='incidentReport' id='incidentReport'>
-            <label for='incidentReport'>Incident Report</label>
-            <br>
+        <!-- <input type='checkbox' name='sendEmail' id='sendEmail' checked>
+        <label for='sendEmail'>Send email</label>
+        <br>
 
-            <input type='checkbox' name='billingUpdate' id='billingUpdate'>
-            <label for='billingUpdate'>Billing update (SBI)</label>
-            <br>
+        <input type='checkbox' name='sendText' id='sendText'>
+        <label for='sendText'>Send text (MIR3)</label>
+        <br>
 
-            <input type='checkbox' name='targetChange' id='targetChange'>
-            <label for='targetChange'>Target change (SCADA)</label>
-            <br>
+        <input type='checkbox' name='isCurrent' id='isCurrent' checked>
+        <label for='isCurrent'>Current information</label>
+        <br>
 
-            <input type='checkbox' name='setpointChange' id='setpointChange'>
-            <label for='setpointChange'>Setpoint change (SCADA)</label>
-            <br>
+        <input type='checkbox' name='incidentReport' id='incidentReport'>
+        <label for='incidentReport'>Incident Report</label>
+        <br>
 
-            <input type='checkbox' name='playbookUpdate' id='playbookUpdate'>
-            <label for='playbookUpdate'>Playbook update (Optim)</label>
-            <br>
+        <input type='checkbox' name='billingUpdate' id='billingUpdate'>
+        <label for='billingUpdate'>Billing update (SBI)</label>
+        <br>
 
-            <input type='checkbox' name='callRecording' id='callRecording'>
-            <label for='callRecording'>Call recording (Zoom)</label>
-            <br>
+        <input type='checkbox' name='targetChange' id='targetChange'>
+        <label for='targetChange'>Target change (SCADA)</label>
+        <br>
 
-            <input type='checkbox' name='alarm' id='alarm'>
-            <label for='alarm'>Alarm (SCADA)</label>
-            <br>
+        <input type='checkbox' name='setpointChange' id='setpointChange'>
+        <label for='setpointChange'>Setpoint change (SCADA)</label>
+        <br>
 
-            <input type='checkbox' name='isAOC' id='isAOC'>
-            <label for='isAOC'>Abnormal Operating Condition (AOC)</label> -->
-            <br>
+        <input type='checkbox' name='playbookUpdate' id='playbookUpdate'>
+        <label for='playbookUpdate'>Playbook update (Optim)</label>
+        <br>
 
-            <button type="submit">Submit new log note</button>
+        <input type='checkbox' name='callRecording' id='callRecording'>
+        <label for='callRecording'>Call recording (Zoom)</label>
+        <br>
 
-        </form>
+        <input type='checkbox' name='alarm' id='alarm'>
+        <label for='alarm'>Alarm (SCADA)</label>
+        <br>
+
+        <input type='checkbox' name='isAOC' id='isAOC'>
+        <label for='isAOC'>Abnormal Operating Condition (AOC)</label> -->
+        <br>
+
+        <button type="submit">Submit new log note</button>
+
+    </form>
+    <br>
+
+    <form action="/lognotes/">
+        <button type="submit">Cancel</button>
+    </form>
 
 </body>
 

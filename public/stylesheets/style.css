@@ -1,11 +1,12 @@
 body {
     font-family: sans-serif;
     background-color: lightblue;
+    margin: 10px 20px;
 }
 
 nav {
-   display: flex;
-   justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 h1 {
@@ -19,7 +20,7 @@ li {
 button {
     /* background-color: chartreuse; */
     border: 5px #BBBBBB;
-    border-radius: 2px;
+    border-radius: 4px;
     box-shadow: 0px 0px 5px #444444;
     /* box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); */
 }
@@ -29,4 +30,3 @@ button {
     /* box-shadow: inset; */
     /* border: 20px; */
 }
-

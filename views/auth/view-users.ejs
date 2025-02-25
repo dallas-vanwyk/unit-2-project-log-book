@@ -13,13 +13,22 @@
 <body>
     <%- include('../partials/_navbar.ejs') %>
     <h1>Log Book Users</h1>
-    <a href="/auth/new-user">Create new user account</a>
-    <br>
+
+    <form action="/auth/new-user">
+        <button type="submit">Create new user account</button>
+    </form>
+
+    <h3>
+        Current user accounts:
+    </h3>
+    
     <ul>
         <% users.forEach((user) => { %>
-            <a href="/auth/<%= user._id %>/edit-user">
-                <li><%= user.username %></li>
-            </a>
+            <li>
+                <form class="userlink" action="/auth/<%= user._id %>/edit-user">
+                    <button type="submit"><%= user.username %></button>
+                </form>
+            </li>
         <% }) %>
     </ul>
 

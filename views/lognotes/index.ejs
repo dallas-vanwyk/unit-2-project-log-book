@@ -13,7 +13,7 @@
 <body>
     <%- include('../partials/_navbar.ejs') %>
     <h1>Integrated Log Book Application</h1>
-    
+
     <ul>
         <% lognotes.forEach((lognote) => { %>
             <li>
@@ -23,6 +23,8 @@
             </li>
         <% }) %>
     </ul>
+
+    <h5>Your user account permissions: <%= // user.role %></h5>
 
 </body>
 

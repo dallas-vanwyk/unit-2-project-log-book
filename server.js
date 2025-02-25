@@ -32,14 +32,15 @@ app.use(
 const path = require('path');
 app.use(express.static(path.join(__dirname, "public")));
 
-// -------------------------------------------------------------- other files...
-
 // authController for all session authentication, including sign-in page
 const authController = require('./controllers/auth.js');
 app.use('/auth', authController);
 
-const isSignedIn = require('./middleware/is-signed-in.js');
-app.use(isSignedIn);
+// check
+const checkAccount = require('./middleware/check-account.js');
+app.use(checkAccount);
+
+
 
 const passUserToView = require('./middleware/pass-user-to-view.js');
 app.use(passUserToView);
