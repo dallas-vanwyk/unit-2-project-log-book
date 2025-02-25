@@ -26,8 +26,8 @@ const lognotesController = require('./controllers/lognotes.js');
 const usersController = require('./controllers/users.js');
 
 // my middleware files
-const passUser = require('./middleware/pass-user.js');
 const checkAccount = require('./middleware/check-account.js');
+const passUser = require('./middleware/pass-user.js');
 
 // -------------------------------------------------------------- other parameters
 
@@ -59,7 +59,8 @@ app.use(morgan('dev'));
 // public folder path for stylesheet
 app.use(express.static(path.join(__dirname, "public")));
 
-
+// if logged in, puts user in the res locals object
+app.use(passUser);
 
 
 // authController for all session authentication, including sign-in page
@@ -72,8 +73,7 @@ app.use('/auth', authController);
 // checks if user signed in; if not, redirect to sign-in page
 app.use(checkAccount);
 
-// if logged in, puts user in the res locals object
-app.use(passUser);
+
 
 
 
