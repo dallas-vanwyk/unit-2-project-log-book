@@ -17,8 +17,10 @@ const Lognote = require('../models/lognote.js');
 
 router.get('/', async (req, res) => {
     const lognotes = await Lognote.find();
+    const user = await User.findById(req.session.user._id);
     res.render('lognotes/index.ejs', {
         lognotes: lognotes,
+        user: user,
     });
 });
 

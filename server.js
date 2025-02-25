@@ -26,7 +26,7 @@ const lognotesController = require('./controllers/lognotes.js');
 const usersController = require('./controllers/users.js');
 
 // my middleware files
-const passUserToView = require('./middleware/pass-user-to-view.js');
+const passUser = require('./middleware/pass-user.js');
 const checkAccount = require('./middleware/check-account.js');
 
 // -------------------------------------------------------------- other parameters
@@ -47,7 +47,7 @@ app.use(methodOverride('_method'));
 
 app.use(
     session({
-        secret: process.env.SESSION_SECRET,
+        secret: process.env.SESSION_SECRET, 
         resave: false,
         saveUninitialized: true,
     })
@@ -72,8 +72,8 @@ app.use('/auth', authController);
 // checks if user signed in; if not, redirect to sign-in page
 app.use(checkAccount);
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-app.use(passUserToView);
+// if logged in, puts user in the res locals object
+app.use(passUser);
 
 
 
