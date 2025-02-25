@@ -18,9 +18,16 @@ const session = require('express-session');
 
 const path = require('path');
 
-const authController = require('./controllers/auth.js');
-
 const port = process.env.PORT ? process.env.PORT : "3000";
+
+// JS controllers for auth, user accounts, and log note CRUDs
+const authController = require('./controllers/auth.js');
+const lognotesController = require('./controllers/lognotes.js');
+const usersController = require('./controllers/users.js');
+
+// my middleware files
+const passUserToView = require('./middleware/pass-user-to-view.js');
+const checkAccount = require('./middleware/check-account.js');
 
 // -------------------------------------------------------------- other parameters
 
@@ -52,21 +59,31 @@ app.use(morgan('dev'));
 // public folder path for stylesheet
 app.use(express.static(path.join(__dirname, "public")));
 
+
+
+
 // authController for all session authentication, including sign-in page
+// note: this must remain ABOVE the checkAccount and passUSer middleware
 app.use('/auth', authController);
 
-// check
-const checkAccount = require('./middleware/check-account.js');
+
+
+
+// checks if user signed in; if not, redirect to sign-in page
 app.use(checkAccount);
 
-
-
-const passUserToView = require('./middleware/pass-user-to-view.js');
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 app.use(passUserToView);
 
-// lognotesController for all log note views and functionality
-const lognotesController = require('./controllers/lognotes.js');
+
+
+
+// lognotesController for log notes CRUDs
 app.use('/lognotes', lognotesController)
+
+// usersController for user accounts CRUDs
+app.use('/users', usersController)
+
 
 
 // -------------------------------------------------------------- routes

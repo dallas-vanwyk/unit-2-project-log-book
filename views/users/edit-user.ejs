@@ -1,4 +1,4 @@
-<!-- auth/edit-user.ejs -->
+<!-- views/users/edit-user.ejs -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,17 +16,17 @@
 
     <h1>Edit user <%= user.username %></h1>
 
-    <form action="/auth/view-users">
+    <form action="/users/view-users">
         <button type="submit">Cancel and return to admin menu</button>
     </form>
     <br>
 
-    <form action="/auth/<%= user._id %>?_method=DELETE" method="POST">
+    <form action="/users/<%= user._id %>?_method=DELETE" method="POST">
         <button>Delete user <%= user.username %></button>
     </form>
     <br>
 
-    <form action="/auth/<%= user._id %>?_method=PUT" method="POST">
+    <form action="/users/<%= user._id %>?_method=PUT" method="POST">
 
         <label for="username">Username:</label>
         <input

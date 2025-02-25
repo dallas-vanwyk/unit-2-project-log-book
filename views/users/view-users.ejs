@@ -1,4 +1,4 @@
-<!-- views/auth/view-users.ejs -->
+<!-- views/users/view-users.ejs -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +14,7 @@
     <%- include('../partials/_navbar.ejs') %>
     <h1>Log Book Users</h1>
 
-    <form action="/auth/new-user">
+    <form action="/users/new-user">
         <button type="submit">Create new user account</button>
     </form>
 
@@ -25,7 +25,7 @@
     <ul>
         <% users.forEach((user) => { %>
             <li>
-                <form class="userlink" action="/auth/<%= user._id %>/edit-user">
+                <form class="userlink" action="/users/<%= user._id %>/edit-user">
                     <button type="submit"><%= user.username %></button>
                 </form>
             </li>
