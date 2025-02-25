@@ -1,7 +1,7 @@
 # Integrated Log Book Application
 
 #### App for recording
-<img src="path to your game screenshot" alt="Log book home page showing list of event logs"/>
+<img src="./public/images/Screenshot.png" alt="Log book home page showing list of event logs"/>
 
 ## Description
 This is a shared log book, for tracking events for a team that works shift. Users can create event logs, which are viewable by the entire team. By default, the home page displays all log notes in reverse chronological order, starting with the most recent at the top.
