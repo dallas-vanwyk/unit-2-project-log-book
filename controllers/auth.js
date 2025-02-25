@@ -52,58 +52,59 @@ router.post('/sign-in', async (req, res) => {
 router.get('/change-password', async (req, res) => {
     if (req.session.user) {
         try {
-
             const user = await User.findById(req.session.user._id);
-
             res.render('auth/change-password.ejs', {
                 user: user,
             });
-
         } catch (error) {
             console.log(error);
             res.redirect('/');
         };
-    }
+    } else {
+        res.redirect('/auth/sign-in.ejs');
+    };
 });
 
 // -------------------------------------------------------------- change password action
 
 router.put('/change-password', async (req, res) => {
+    if (req.session.user) {
+        try {
 
-    try {
+            const user = await User.findById(req.session.user._id);
 
-        const user = await User.findById(req.session.user._id);
+            const validPassword = bcrypt.compareSync(
+                req.body.oldPassword,
+                user.password
+            );
+            if (!validPassword) {
+                return res.send('Old password incorrect, please try again')
+            }
 
-        const validPassword = bcrypt.compareSync(
-            req.body.oldPassword,
-            user.password
-        );
-        if (!validPassword) {
-            return res.send('Old password incorrect, please try again')
-        }
+            if (req.body.password !== req.body.confirmPassword) {
+                return res.send(`New passwords don't match, please try again`);
+            };
 
-        if (req.body.password !== req.body.confirmPassword) {
-            return res.send(`New passwords don't match, please try again`);
+            // implement same pw requirements/validations should apply here
+
+            const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+            req.body.password = hashedPassword;
+
+            await User.findByIdAndUpdate(
+                user._id,
+                { password: req.body.password },
+                { new: true },
+            );
+
+            res.redirect('/');
+
+        } catch (error) {
+            console.log(error);
+            res.redirect('/auth/change-password');
         };
-
-        // implement same pw requirements/validations should apply here
-
-        const hashedPassword = bcrypt.hashSync(req.body.password, 10);
-        req.body.password = hashedPassword;
-
-        await User.findByIdAndUpdate(
-            user._id,
-            { password: req.body.password },
-            { new: true },
-        );
-
-        res.redirect('/');
-
-    } catch (error) {
-        console.log(error);
-        res.redirect('/auth/change-password');
+    } else {
+        res.redirect('/auth/sign-in.ejs');
     };
-
 });
 
 // -------------------------------------------------------------- Sign out action
@@ -131,40 +132,43 @@ router.get('/new-user', async (req, res) => {
 // -------------------------------------------------------------- Create user action
 
 router.post('/create-user', async (req, res) => {
-    try {
+    if (req.session.user) {
+        try {
+            const currentUser = await User.findById(req.session.user._id);
+            if (currentUser.role === 'admin') {
 
-        const currentUser = await User.findById(req.session.user._id);
-        if (currentUser.role === 'admin') {
+                // check if username is taken
+                const userInDatabase = await User.findOne({ username: req.body.username });
+                if (userInDatabase) {
+                    return res.send('user name is already in database');
+                };
 
-            // check if username is taken
-            const userInDatabase = await User.findOne({ username: req.body.username });
-            if (userInDatabase) {
-                return res.send('user name is already in database');
+                if (req.body.password !== req.body.confirmPassword) {
+                    return res.send(`passwords don't match`);
+                };
+
+                // should I do any other password validations? minimum length, required characters?
+
+                const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+                req.body.password = hashedPassword;
+                // dumb question but confirmPassword is still the original pw at this point right?
+                // Does that constitue a security risk?
+
+                await User.create(req.body);
+
+                res.redirect('/auth/view-users');
+
+            } else {
+                res.redirect('/');
             };
 
-            if (req.body.password !== req.body.confirmPassword) {
-                return res.send(`passwords don't match`);
-            };
-
-            // should I do any other password validations? minimum length, required characters?
-
-            const hashedPassword = bcrypt.hashSync(req.body.password, 10);
-            req.body.password = hashedPassword;
-            // dumb question but confirmPassword is still the original pw at this point right?
-            // Does that constitue a security risk?
-
-            await User.create(req.body);
-
-            res.redirect('/auth/view-users');
-
-        } else {
-            res.redirect('/');
-        };
-
-    } catch (error) {
-        console.log(error);
-        res.redirect('/'); // tbd
-    }
+        } catch (error) {
+            console.log(error);
+            res.redirect('/'); // tbd
+        }
+    } else {
+        res.redirect('/auth/sign-in.ejs');
+    };
 });
 
 // -------------------------------------------------------------- view all users
@@ -189,15 +193,11 @@ router.get('/view-users', async (req, res) => {
 // -------------------------------------------------------------- edit user
 
 router.get('/:userId/edit-user', async (req, res) => {
-
     if (req.session.user) {
-
         const currentUser = await User.findById(req.session.user._id);
 
         if (currentUser.role === 'admin') {
-
             const user = await User.findById(req.params.userId);
-
             res.render('auth/edit-user.ejs', {
                 user: user,
             });
@@ -214,65 +214,75 @@ router.get('/:userId/edit-user', async (req, res) => {
 // -------------------------------------------------------------- update user
 
 router.put('/:userId', async (req, res) => {
-    try {
-        const currentUser = await User.findById(req.session.user._id);
-        if (currentUser.role === 'admin') {
+    if (req.session.user) {
 
-            // check if editing user is in database
-            const userInDatabase = await User.findOne({ _id: req.params.userId });
-            if (!userInDatabase) {
-                return res.send('user is not in database');
+        try {
+            const currentUser = await User.findById(req.session.user._id);
+            if (currentUser.role === 'admin') {
+
+                // check if editing user is in database
+                const userInDatabase = await User.findOne({ _id: req.params.userId });
+                if (!userInDatabase) {
+                    return res.send('user is not in database');
+                };
+
+                // check if passwords match each other
+                if (req.body.password !== req.body.confirmPassword) {
+                    return res.send(`passwords don't match`);
+                };
+
+                const user = await User.findById(req.params.userId);
+
+                // check if password was changed
+                if (req.body.password !== user.password) {
+                    // does re-hash password ONLY if it was updated
+                    const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+                    req.body.password = hashedPassword;
+                };
+
+                user.set(req.body);
+
+                await user.save();
+
+                res.redirect('/auth/view-users');
+
+            } else {
+                res.redirect('/');
             };
 
-            // check if passwords match each other
-            if (req.body.password !== req.body.confirmPassword) {
-                return res.send(`passwords don't match`);
-            };
-
-            const user = await User.findById(req.params.userId);
-
-            // check if password was changed
-            if (req.body.password !== user.password) {
-                // does re-hash password ONLY if it was updated
-                const hashedPassword = bcrypt.hashSync(req.body.password, 10);
-                req.body.password = hashedPassword;
-            };
-
-            user.set(req.body);
-
-            await user.save();
-
-            res.redirect('/auth/view-users');
-
-        } else {
+        } catch (error) {
+            console.log(error);
             res.redirect('/');
         };
-
-    } catch (error) {
-        console.log(error);
-        res.redirect('/');
+    } else {
+        res.redirect('/auth/sign-in.ejs');
     };
+
 });
 
 // -------------------------------------------------------------- delete user
 
 router.delete('/:userId', async (req, res) => {
-    try {
-        // should add some manner of confirmation here...
-        const currentUser = await User.findById(req.session.user._id);
-        if (currentUser.role === 'admin') {
+    if (req.session.user) {
+        try {
+            // should add some manner of confirmation here...
+            const currentUser = await User.findById(req.session.user._id);
+            if (currentUser.role === 'admin') {
 
-            await User.findByIdAndDelete(req.params.userId);
+                await User.findByIdAndDelete(req.params.userId);
 
-            res.redirect('/auth/view-users');
+                res.redirect('/auth/view-users');
 
-        } else {
-            res.redirect('/');
+            } else {
+                res.redirect('/');
+            };
+
+        } catch (error) {
+            console.log(error);
+            res.redirect('/')
         };
-
-    } catch (error) {
-        console.log(error);
-        res.redirect('/')
+    } else {
+        res.redirect('/auth/sign-in.ejs');
     };
 });
 

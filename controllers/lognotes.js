@@ -46,62 +46,76 @@ router.get('/new', async (req, res) => {
 // -------------------------------------------------------------- Delete
 
 router.delete('/:lognoteId', async (req, res) => {
-    try {
-        // this should have some sort of confirmation double-check
+    if (req.session.user) {
 
-        const currentUser = await User.findById(req.session.user._id);
-        if (currentUser.role === 'admin' || currentUser.role === 'editor') {
-            await Lognote.findByIdAndDelete(req.params.lognoteId);
+        try {
+            // this should have some sort of confirmation double-check
+
+            const currentUser = await User.findById(req.session.user._id);
+            if (currentUser.role === 'admin' || currentUser.role === 'editor') {
+                await Lognote.findByIdAndDelete(req.params.lognoteId);
+            };
+            res.redirect('/lognotes');
+
+        } catch (error) {
+            console.log(error);
+            res.redirect('/');
         };
-        res.redirect('/lognotes');
-
-    } catch (error) {
-        console.log(error);
-        res.redirect('/');
+    } else {
+        res.redirect('/auth/sign-in.ejs');
     };
 });
 
 // -------------------------------------------------------------- Update
 
 router.put('/:lognoteId', async (req, res) => {
-    try {
-        const currentUser = await User.findById(req.session.user._id);
-        if (currentUser.role === 'admin' || currentUser.role === 'editor') {
-            const lognote = await Lognote.findById(req.params.lognoteId);
-            lognote.set(req.body);
-            await lognote.save();
-            res.redirect('/lognotes');
-        } else {
+    if (req.session.user) {
+        try {
+            const currentUser = await User.findById(req.session.user._id);
+            if (currentUser.role === 'admin' || currentUser.role === 'editor') {
+                const lognote = await Lognote.findById(req.params.lognoteId);
+                lognote.set(req.body);
+                await lognote.save();
+                res.redirect('/lognotes');
+            } else {
+                res.redirect('/');
+            };
+        } catch (error) {
+            console.log(error);
             res.redirect('/');
         };
-    } catch (error) {
-        console.log(error);
-        res.redirect('/');
+    } else {
+        res.redirect('/auth/sign-in.ejs');
     };
 });
 
 // -------------------------------------------------------------- Create
 
 router.post('/', async (req, res) => {
-    try {
-        // auto-fill the creator
+    if (req.session.user) {
 
-        // auto-generate the created timestamp
+        try {
+            // auto-fill the creator
 
-        // turn check boxes into true/false
-        // parse dates & times
+            // auto-generate the created timestamp
 
-        const currentUser = await User.findById(req.session.user._id);
+            // turn check boxes into true/false
+            // parse dates & times
 
-        if (currentUser.role === 'admin' || currentUser.role === 'editor') {
-            await Lognote.create(req.body);
-            res.redirect('/lognotes');
-        } else {
+            const currentUser = await User.findById(req.session.user._id);
+
+            if (currentUser.role === 'admin' || currentUser.role === 'editor') {
+                await Lognote.create(req.body);
+                res.redirect('/lognotes');
+            } else {
+                res.redirect('/');
+            };
+        } catch (error) {
+            console.log(error);
             res.redirect('/');
         };
-    } catch (error) {
-        console.log(error);
-        res.redirect('/');
+    } else {
+        res.redirect('/auth/sign-in.ejs');
     };
 });
 
