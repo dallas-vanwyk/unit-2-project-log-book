@@ -26,6 +26,12 @@ app.use(
     })
 );
 
+// -------------------------------------------------------------- middleware
+
+// style
+const path = require('path');
+app.use(express.static(path.join(__dirname, "public")));
+
 // -------------------------------------------------------------- other files...
 
 // authController for all session authentication, including sign-in page

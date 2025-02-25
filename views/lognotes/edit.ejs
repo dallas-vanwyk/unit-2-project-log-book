@@ -7,14 +7,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Log</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 
 <body>
     <%- include('../partials/_navbar.ejs') %>
+
     <h1>Edit Log <%= lognote.id %></h1>
-
-    <%= // lognote %>
-
 
     <form action="/lognotes/<%= lognote._id %>?_method=PUT" method="POST">
 
@@ -95,62 +94,15 @@
         </select>
         <br>
 
-        <!-- set a default value here -->
-        <!-- do I want this to be free text or a datetime-local? -->
-        <!-- <label for="inputTime">Event date and time:</label>
-        <input type="text" name="inputTime" id="inputTime">
-        <br> -->
-
-
-        <!-- <input type='checkbox' name='sendEmail' id='sendEmail' checked>
-        <label for='sendEmail'>Send email</label>
-        <br>
-
-        <input type='checkbox' name='sendText' id='sendText'>
-        <label for='sendText'>Send text (MIR3)</label>
-        <br>
-
-        <input type='checkbox' name='isCurrent' id='isCurrent' checked>
-        <label for='isCurrent'>Current information</label>
-        <br>
-
-        <input type='checkbox' name='incidentReport' id='incidentReport'>
-        <label for='incidentReport'>Incident Report</label>
-        <br>
-
-        <input type='checkbox' name='billingUpdate' id='billingUpdate'>
-        <label for='billingUpdate'>Billing update (SBI)</label>
-        <br>
-
-        <input type='checkbox' name='targetChange' id='targetChange'>
-        <label for='targetChange'>Target change (SCADA)</label>
-        <br>
-
-        <input type='checkbox' name='setpointChange' id='setpointChange'>
-        <label for='setpointChange'>Setpoint change (SCADA)</label>
-        <br>
-
-        <input type='checkbox' name='playbookUpdate' id='playbookUpdate'>
-        <label for='playbookUpdate'>Playbook update (Optim)</label>
-        <br>
-
-        <input type='checkbox' name='callRecording' id='callRecording'>
-        <label for='callRecording'>Call recording (Zoom)</label>
-        <br>
-
-        <input type='checkbox' name='alarm' id='alarm'>
-        <label for='alarm'>Alarm (SCADA)</label>
-        <br>
-
-        <input type='checkbox' name='isAOC' id='isAOC'>
-        <label for='isAOC'>Abnormal Operating Condition (AOC)</label> -->
-        <br>
-
-        <button type="submit">Submit log note updates</button>
+        <button type="submit">Save updates</button>
 
     </form>
     <br>
-    <a href="/lognotes/">Cancel edit</a>
+
+    <form action="/lognotes/">
+        <button type="submit">Cancel</button>
+    </form>
+
 </body>
 
 </html>

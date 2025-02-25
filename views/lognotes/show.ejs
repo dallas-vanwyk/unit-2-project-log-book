@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log Note</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 
 <body>
@@ -14,21 +15,28 @@
     
     <h1>Integrated Log Book Application</h1>
     
-    <p>contact name: <%= lognote.contactName %>
-    <br>
-    contact type: <%= lognote.contactType %>
-    <br>
-    product: <%= lognote.product %>
-    <br>
-    location: <%= lognote.locationName %>
-    <br>
-    location type: <%= lognote.locationType %>
-    <br>
-    description: <%= lognote.description %>
-    <br>
+    <form action="/lognotes/" method="POST">
+        <button type="submit">Back to log notes</button>
+    </form>
+
+    <p>
+        contact name: <%= lognote.contactName %>
+        <br>
+        contact type: <%= lognote.contactType %>
+        <br>
+        product: <%= lognote.product %>
+        <br>
+        location: <%= lognote.locationName %>
+        <br>
+        location type: <%= lognote.locationType %>
+        <br>
+        description: <%= lognote.description %>
+        <br>
     </p>
 
-    <a href="/lognotes/<%= lognote._id %>/edit">Edit this log</a>
+    <form action="/lognotes/<%= lognote._id %>/edit">
+        <button type="submit">Edit this log</button>
+    </form>
     <br>
 
     <form action="/lognotes/<%= lognote._id %>?_method=DELETE" method="POST">

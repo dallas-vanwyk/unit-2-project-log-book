@@ -7,18 +7,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log book</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 
 <body>
     <%- include('../partials/_navbar.ejs') %>
     <h1>Integrated Log Book Application</h1>
-    <br>
     
     <ul>
         <% lognotes.forEach((lognote) => { %>
-            <a href="/lognotes/<%= lognote._id %>">
-                <li><%= lognote.description %></li>
-            </a>
+            <li>
+                <form class="loglink" action="/lognotes/<%= lognote._id %>">
+                    <button type="submit"><%= lognote.description %></button>
+                </form>
+            </li>
         <% }) %>
     </ul>
 

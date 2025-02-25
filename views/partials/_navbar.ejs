@@ -1,10 +1,37 @@
 <!-- views/partials/_navbar.ejs -->
 
 <nav>
+    <form class="navbar" action="/lognotes/">
+        <button type="submit">Home</button>
+    </form>
+
+    <form class="navbar" action="/lognotes/new">
+        <button type="submit">New log</button>
+    </form>
+
+    <form class="navbar" action="mailto:dallas.vanwyk@gmail.com">
+        <button type="submit">Contact</button>
+    </form>
+
+    <form class="navbar" action="/auth/change-password">
+        <button type="submit">Change password</button>
+    </form>
+
+    <form class="navbar" action="/auth/sign-out">
+        <button type="submit">Sign Out</button>
+    </form>
+
+    <form class="navbar" action="/auth/view-users">
+        <button type="submit">Admin menu</button>
+    </form>
+
+    <!--     
     <a href="/lognotes/">Home</a>
     <a href="/lognotes/new">New Log</a>
     <a href="mailto:dallas.vanwyk@gmail.com">Contact</a>
     <a href="/auth/change-password">Change Password</a>
     <a href="/auth/sign-out">Sign Out</a>
     <a href="/auth/view-users">Admin menu</a>
+    -->
+
 </nav>

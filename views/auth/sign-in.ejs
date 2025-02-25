@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log book</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 
 <!-- this will be the landing page if you're signed out -->
@@ -17,7 +18,6 @@
     <h1>Integrated Log Book Application</h1>
     <h5>version 1.0</h5>
     <p>Please sign in to access the application.</p>
-    
 
     <form action="/auth/sign-in" method="POST">
         <label for="username">Username:</label>
@@ -34,7 +34,10 @@
 
     <br>
 
-    <a href="mailto:dallas.vanwyk@gmail.com">Contact admin for new account setup</a>
+    <form action="mailto:dallas.vanwyk@gmail.com">
+        <button type="submit">Contact admin for new account setup</button>
+    </form>
+
 </body>
 
 </html>

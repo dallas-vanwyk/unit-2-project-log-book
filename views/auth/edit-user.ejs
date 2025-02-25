@@ -7,6 +7,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit User</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 
 <body>
@@ -15,12 +16,14 @@
 
     <h1>Edit user <%= user.username %></h1>
 
-    <a href="/auth/view-users">Cancel and return to admin menu</a>
+    <form action="/auth/view-users">
+        <button type="submit">Cancel and return to admin menu</button>
+    </form>
+    <br>
 
     <form action="/auth/<%= user._id %>?_method=DELETE" method="POST">
         <button>Delete user <%= user.username %></button>
     </form>
-    
     <br>
 
     <form action="/auth/<%= user._id %>?_method=PUT" method="POST">
@@ -108,7 +111,6 @@
 
         <button type="submit">Submit user edits</button>
     </form>
-
 
 </body>
 
