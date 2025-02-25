@@ -1,0 +1,115 @@
+<!-- auth/edit-user.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit User</title>
+</head>
+
+<body>
+
+    <%- include('../partials/_navbar.ejs') %>
+
+    <h1>Edit user <%= user.username %></h1>
+
+    <a href="/auth/view-users">Cancel and return to admin menu</a>
+
+    <form action="/auth/<%= user._id %>?_method=DELETE" method="POST">
+        <button>Delete user <%= user.username %></button>
+    </form>
+    
+    <br>
+
+    <form action="/auth/<%= user._id %>?_method=PUT" method="POST">
+
+        <label for="username">Username:</label>
+        <input
+            type="text"
+            name="username"
+            id="username"
+            required
+            value="<%= user.username %>"
+        />
+        <br>
+
+        <label for="password">Password:</label>
+        <input
+            type="password"
+            name="password"
+            id="password"
+            required
+            value="<%= user.password %>"
+        />
+        <br>
+
+        <label for="confirmPassword">Confirm Password:</label>
+        <input
+            type="password"
+            name="confirmPassword"
+            id="confirmPassword"
+            required
+            value="<%= user.password %>"
+        />
+        <br>
+
+        <label for="role">Role:</label>
+        <select name="role" id="role">
+            
+            <option
+                value="viewer"
+                <%= user.role === 'viewer' ? 'selected' : '' %>
+            >Viewer</option>
+            
+            <option
+                value="editor"
+                <%= user.role === 'editor' ? 'selected' : '' %>
+            >Editor</option>
+            
+            <option
+                value="admin"
+                <%= user.role === 'admin' ? 'selected' : '' %>
+            >Admin</option>
+
+        </select>
+        <br>
+
+        <label for="firstName">First name:</label>
+        <input
+            type="text"
+            name="firstName"
+            id="firstName"
+            required
+            value="<%= user.firstName %>"
+        />
+        <br>
+
+        <label for="lastName">Last name:</label>
+        <input
+            type="text"
+            name="lastName"
+            id="lastName"
+            required
+            value="<%= user.lastName %>"
+        />
+        <br>
+
+        <label for="email">email:</label>
+        <input
+            type="text"
+            name="email"
+            id="email"
+            required
+            value="<%= user.email %>"
+        />
+        <br>
+
+        <button type="submit">Submit user edits</button>
+    </form>
+
+
+</body>
+
+</html>

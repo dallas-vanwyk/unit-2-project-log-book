@@ -12,12 +12,12 @@
 <body>
     <%- include('../partials/_navbar.ejs') %>
     <h1>Log Book Users</h1>
+    <a href="/auth/new-user">Create new user account</a>
     <br>
-    
     <ul>
         <% users.forEach((user) => { %>
-            <a href="/auth/edit-user/<%= // user._id %>">
-                <li><%= user %></li>
+            <a href="/auth/<%= user._id %>/edit-user">
+                <li><%= user.username %></li>
             </a>
         <% }) %>
     </ul>

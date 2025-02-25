@@ -46,6 +46,7 @@ router.post('/sign-in', async (req, res) => {
         res.redirect('/'); // if sign-in was unsuccessful,land back at the sign-in page
     };
 });
+
 // -------------------------------------------------------------- change password page
 
 router.get('/change-password', async (req, res) => {
@@ -109,13 +110,22 @@ router.put('/change-password', async (req, res) => {
 
 router.get('/sign-out', (req, res) => {
     req.session.destroy();
-    res.redirect('/'); // could go to sign-in page but w/e
+    res.redirect('/'); // will go to the sign-in page
 });
 
-// -------------------------------------------------------------- Create user page
+// -------------------------------------------------------------- New user page
 
-router.get('/create-user', (req, res) => {
-    res.render('auth/create-user.ejs');
+router.get('/new-user', async (req, res) => {
+    if (req.session.user) {
+        const currentUser = await User.findById(req.session.user._id);
+        if (currentUser.role === 'admin') {
+            res.render('auth/new-user.ejs');
+        } else {
+            res.redirect('/');
+        };
+    } else {
+        res.redirect('/auth/sign-in.ejs');
+    };
 });
 
 // -------------------------------------------------------------- Create user action
@@ -123,30 +133,37 @@ router.get('/create-user', (req, res) => {
 router.post('/create-user', async (req, res) => {
     try {
 
-        // check if username is taken
-        const userInDatabase = await User.findOne({ username: req.body.username });
-        if (userInDatabase) {
-            return res.send('user name is already in database');
+        const currentUser = await User.findById(req.session.user._id);
+        if (currentUser.role === 'admin') {
+
+            // check if username is taken
+            const userInDatabase = await User.findOne({ username: req.body.username });
+            if (userInDatabase) {
+                return res.send('user name is already in database');
+            };
+
+            if (req.body.password !== req.body.confirmPassword) {
+                return res.send(`passwords don't match`);
+            };
+
+            // should I do any other password validations? minimum length, required characters?
+
+            const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+            req.body.password = hashedPassword;
+            // dumb question but confirmPassword is still the original pw at this point right?
+            // Does that constitue a security risk?
+
+            await User.create(req.body);
+
+            res.redirect('/auth/view-users');
+
+        } else {
+            res.redirect('/');
         };
-
-        if (req.body.password !== req.body.confirmPassword) {
-            return res.send(`passwords don't match`);
-        };
-
-        // should I do any other password validations? minimum length, required characters?
-
-        const hashedPassword = bcrypt.hashSync(req.body.password, 10);
-        req.body.password = hashedPassword;
-        // dumb question but confirmPassword is still the original pw at this point right?
-        // Does that constitue a security risk?
-
-        await User.create(req.body);
-
-        res.redirect('/auth/create-user'); // probably change this to the user list
 
     } catch (error) {
         console.log(error);
-        res.redirect('/auth/create-user'); // tbd
+        res.redirect('/'); // tbd
     }
 });
 
@@ -154,10 +171,7 @@ router.post('/create-user', async (req, res) => {
 
 router.get('/view-users', async (req, res) => {
     if (req.session.user) {
-
-        console.log(req.session.user);
         const user = await User.findById(req.session.user._id);
-
         if (user.role === 'admin') {
             const users = await User.find();
             res.render('auth/view-users.ejs', {
@@ -166,11 +180,101 @@ router.get('/view-users', async (req, res) => {
         } else {
             res.redirect('/');
         };
+
+    } else {
+        res.redirect('/auth/sign-in.ejs');
     };
 });
 
 // -------------------------------------------------------------- edit user
 
+router.get('/:userId/edit-user', async (req, res) => {
+
+    if (req.session.user) {
+
+        const currentUser = await User.findById(req.session.user._id);
+
+        if (currentUser.role === 'admin') {
+
+            const user = await User.findById(req.params.userId);
+
+            res.render('auth/edit-user.ejs', {
+                user: user,
+            });
+
+        } else {
+            res.redirect('/');
+        };
+    } else {
+        res.redirect('/auth/sign-in.ejs');
+    };
+
+});
+
+// -------------------------------------------------------------- update user
+
+router.put('/:userId', async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.session.user._id);
+        if (currentUser.role === 'admin') {
+
+            // check if editing user is in database
+            const userInDatabase = await User.findOne({ _id: req.params.userId });
+            if (!userInDatabase) {
+                return res.send('user is not in database');
+            };
+
+            // check if passwords match each other
+            if (req.body.password !== req.body.confirmPassword) {
+                return res.send(`passwords don't match`);
+            };
+
+            const user = await User.findById(req.params.userId);
+
+            // check if password was changed
+            if (req.body.password !== user.password) {
+                // does re-hash password ONLY if it was updated
+                const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+                req.body.password = hashedPassword;
+            };
+
+            user.set(req.body);
+
+            await user.save();
+
+            res.redirect('/auth/view-users');
+
+        } else {
+            res.redirect('/');
+        };
+
+    } catch (error) {
+        console.log(error);
+        res.redirect('/');
+    };
+});
+
+// -------------------------------------------------------------- delete user
+
+router.delete('/:userId', async (req, res) => {
+    try {
+        // should add some manner of confirmation here...
+        const currentUser = await User.findById(req.session.user._id);
+        if (currentUser.role === 'admin') {
+
+            await User.findByIdAndDelete(req.params.userId);
+
+            res.redirect('/auth/view-users');
+
+        } else {
+            res.redirect('/');
+        };
+
+    } catch (error) {
+        console.log(error);
+        res.redirect('/')
+    };
+});
 
 
 // -------------------------------------------------------------- export module
