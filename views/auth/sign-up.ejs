@@ -1,0 +1,60 @@
+<!-- views/auth/sign-up.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign up</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+
+  <h1>Create an account to sign up:</h1>
+
+  <form action="/auth/sign-up" method="POST">
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" required />
+    <br>
+
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" required />
+    <br>
+
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="password" name="confirmPassword" id="confirmPassword" required />
+    <br>
+
+    <label for="role">Role:</label>
+    <select name="role" id="role">
+      <option value="viewer" selected>Viewer</option>
+      <option value="editor">Editor</option>
+      <option value="admin">Admin</option>
+    </select>
+    <br>
+
+    <label for="firstName">First name:</label>
+    <input type="text" name="firstName" id="firstName" required />
+    <br>
+
+    <label for="lastName">Last name:</label>
+    <input type="text" name="lastName" id="lastName" required />
+    <br>
+
+    <label for="email">email:</label>
+    <input type="text" name="email" id="email" required />
+    <br>
+
+    <button type="submit">Create your account!</button>
+  </form>
+  <br>
+  <br>
+
+  <form action="/auth/sign-in">
+    <button type="signIn">Back to sign in page</button>
+  </form>
+</body>
+
+</html>

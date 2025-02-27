@@ -10,6 +10,44 @@ const User = require('../models/user.js');
 
 // -------------------------------------------------------------- r o u t e s
 
+// -------------------------------------------------------------- Sign up page
+
+router.get('/sign-up', (req, res) => {
+    res.render('auth/sign-up.ejs');
+});
+
+// -------------------------------------------------------------- Sign up action (create user)
+
+router.post('/sign-up', async (req, res) => {
+    try {
+        // check if username is taken
+        const userInDatabase = await User.findOne({ username: req.body.username });
+        if (userInDatabase) {
+            return res.send('user name is already in database');
+        };
+
+        if (req.body.password !== req.body.confirmPassword) {
+            return res.send(`passwords don't match`);
+        };
+
+        // should I do any other password validations? minimum length, required characters?
+
+        const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+        req.body.password = hashedPassword;
+        // dumb question but confirmPassword is still the original pw at this point right?
+        // Does that constitue a security risk?
+
+        await User.create(req.body);
+
+        res.redirect('/');
+
+    } catch (error) {
+        console.log(error);
+        res.redirect('/'); // tbd
+    }
+
+});
+
 // -------------------------------------------------------------- Sign in page
 
 router.get('/sign-in', (req, res) => {
